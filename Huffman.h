@@ -1,37 +1,49 @@
 #ifndef HUFFMAN_H
 #define HUFFMAN_H
 
+#include <iostream>
+#include <iomanip>
+#include <string>
 #include <vector>
+#include <queue>
 #include <algorithm>
+#include <map>
+using namespace std;
 
-class HuffmanNode {
-public:
+struct HuffmanNode {
 	char symbol;
-	unsigned long codeword, freq;
-	unsigned int runLen, codewordLen;
+	int frequency;
 	HuffmanNode* left, * right;
 
-	HuffmanNode() : left(0), right(0) {}
-	HuffmanNode(char s, unsigned long f, unsigned int r, HuffmanNode* lt = 0, HuffmanNode* rt = 0) {
-		symbol = s;
-		freq = f;
-		runLen = r;
-		left = lt;
-		right = rt;
+	HuffmanNode() : left(nullptr), right(nullptr) {}
+	HuffmanNode(char d, int f) : symbol(d), frequency(f), left(nullptr), right(nullptr) {}
+};
+
+// Custom operator for the priority queue
+struct Compare {
+	bool operator()(HuffmanNode* left, HuffmanNode* right) {
+		return left->frequency > right->frequency;
 	}
 };
 
-class ListNode {
+class HuffmanTree {
+private:
+	HuffmanNode* root;
+
+	void deleteTree(HuffmanNode* node);
+	void buildEncodingMap(HuffmanNode* node, string str, map<char, string>& huffmanCode);
+
 public:
-	HuffmanNode* tree;
-	ListNode* next, * prev;
+	HuffmanTree() : root(nullptr) {}
 
-	ListNode() : next(0), prev(0) {}
-	ListNode(ListNode* n, ListNode *p) : next(n), prev(p) {}
-};
+	// Destructor to clean up memory
+	~HuffmanTree() { deleteTree(root); }
 
-class HuffmanCode {
-
+	void buildHuffmanTree(map<char, int>& freq);
+	map<char, std::string> getEncodingMap();
+	void buildTreeFromFrequencyMap(const map<char, int>& freq);
+	string encode(const string& data);
+	string decode(const string& encodedString);
 };
 
 
