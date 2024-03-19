@@ -14,13 +14,15 @@ int main() {
 	getline(cin, data);
 	cout << endl;
 
+	// Create a container to store the frequency of characters
 	map<char, int> frequencyTable = buildFrequencyTable(data);
-	printMap(frequencyTable);
+	printMap(frequencyTable); // For testing purposes
 	cout << endl;
 
 	HuffmanTree huffmanTree;
 	huffmanTree.buildHuffmanTree(frequencyTable);
 
+	// 
 	map<char, string> huffmanCode = huffmanTree.getEncodingMap();
 
 	// Display the Huffman Codes
@@ -32,6 +34,7 @@ int main() {
 	// Encode then print data
 	string encodedString = huffmanTree.encode(data);
 	cout << "\nThe encoded string is:\n" << encodedString << endl;
+	cout << "\n**BITS REQUIRED: " << encodedString.length() << endl;
 
 	// Decode then print data
 	string decodedString = huffmanTree.decode(encodedString);
